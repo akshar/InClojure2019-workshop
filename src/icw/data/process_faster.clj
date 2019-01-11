@@ -150,14 +150,14 @@ x
                    ;; Just to add randomness
                    (Thread/sleep (rand-int 20))
 
-                   (#_FIME failures-ref
-                           #_FIXME
+                   (alter failures-ref
+                           conj
                            {:thread-id (str "Thread-" n)
                             :failure-num @failure-num})
 
-                   (#_FIME failure-num #_FIXME)
+                   (alter failure-num inc)
                    (when (> (count @failures-ref) 5)
-                     (#_FIXME failures-ref
+                     (ref-set failures-ref
                               (into []
                                     (drop (- (count @failures-ref)
                                              5)

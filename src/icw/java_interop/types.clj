@@ -87,12 +87,14 @@
 ;; Executors:1 ends here
 
 ;; [[file:~/github/intermediate-clojure-workshop/content/java-interop/types.org::*Records%20and%20Interfaces][Records and Interfaces:1]]
-(clojure.pprint/pprint (do (do
+(clojure.pprint/pprint (do
   "Yes, in Java, *everything* is an Object. So are our records"
   (defrecord FooRecord [foo bar]
     ; Which means, we make our toString a pretty one.
     Object
-    (toString [_] (str "I am a holder of foo and bar. They are: " foo " and " bar)))
+    (toString [_] (str "I am a holder of foo and bar. They are: " foo " and " bar))
+
+    )
 
   ; Who are FooRecord's ancestors?
   (ancestors FooRecord)
@@ -100,7 +102,7 @@
   ; Let's invoke our over-ridden method above...
   (str (->FooRecord "foo" "bar"))
   ; OR
-  (.toString (->FooRecord "foo" "bar")))))
+  (.toString (->FooRecord "foo" "bar"))))
 ;; Records and Interfaces:1 ends here
 
 ;; [[file:~/github/intermediate-clojure-workshop/content/java-interop/types.org::*Records%20and%20Interfaces][Records and Interfaces:2]]

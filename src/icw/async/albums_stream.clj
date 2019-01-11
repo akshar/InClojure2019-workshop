@@ -17,14 +17,14 @@
 (defonce enabled? (atom false))
 (defonce quit? (atom false))
 
-(defonce generator-loop
+(def generator-loop
   (go-loop [stream (data-gen/get-albums-xs)]
-    #_("Introduce an appropriate delay")
+    (a/<!! (a/timeout 250))
     (if-not @quit?
       (do
         (if @enabled?
-          (a/>! in-ch #_(FIXME stream) :dummy))
-        (recur #_(FIXME stream) :dummy)))))
+          (a/>! in-ch (first stream)))
+        (recur (rest stream))))))
 
 (defn enable-stream! []
   (reset! enabled? true))

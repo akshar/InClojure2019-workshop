@@ -360,7 +360,7 @@ x
           albums (idp/line-xs->album-xs idp/album-lines)]
       (doseq [album albums]
         ;; Running it in another thread will help
-        (future(jdbc/insert! (update-in album
+        (future (jdbc/insert! (update-in album
                                         [:subgenre]
                                         #(cs/join "," %))))))))
 

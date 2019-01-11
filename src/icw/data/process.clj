@@ -75,7 +75,7 @@
      :artist artist
      :album album
      :genre genre
-     :subgenre-x subgenre-xs }))
+     :subgenre subgenre-xs }))
 
 (comment
   (= (line-vec->line-map ["1"
@@ -95,17 +95,16 @@
 
 (comment
   (take 10
-        (map #_FIXME
-             (map #_FIXME
+        (map line-vec->line-map
+             (map parse-line
                   album-lines))))
 
 
 (defn line-xs->album-xs
-  [line-xs]
-  ;; Use parse-line to convert list of strings to list of vectors
-  ;; Use line-vec->line-map to convert list of vectors to list of map
-
-  )
+  [album-lines]
+  (map line-vec->line-map
+             (map parse-line
+                  album-lines)))
 
 (defn populate-db
   []

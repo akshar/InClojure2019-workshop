@@ -68,7 +68,14 @@
    :subgenre-xs [\"Rock & Roll\"
                  \"Psychedelic Rock\"]}"
   [xs]
-  )
+
+  (let [[id year album artist genre subgenre-xs] xs]
+    {:number id
+     :year year
+     :artist artist
+     :album album
+     :genre genre
+     :subgenre-x subgenre-xs }))
 
 (comment
   (= (line-vec->line-map ["1"

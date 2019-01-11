@@ -54,8 +54,12 @@
 ;; The API:1 ends here
 
 ;; [[file:~/github/intermediate-clojure-workshop/content/async/rlsc.org::*Outline][Outline:1]]
+
+
+(def foo-token (atom 0))
+
 (defrecord RLSC
-  [in-ch out-ch process-fn time-gap-ms burst-count]
+  [in-ch out-ch process-fn time-gap-ms burst-count token shutdown?]
   ;; Any internal state to track??
 
   RLSCController
@@ -64,22 +68,27 @@
   ; 2. The other processes messages per the policy
   (start! [_]
     (go-loop []
-      #_("A periodic process that increments tokens"))
-    (go-loop [#_v #_("read a message")]
+      (swap! token inc))
+    (go-loop [album (<! in-ch)]
       "If we have capacity process, else simply pass on to the output channel"
-      (recur #_("read next message if no shutdown signal"))))
+      (if (< token burst-count)
+        (process-fn album)
+        (>! out-ch))
+
+      (when-not @shutdown?
+        (recur #_("read next message if no shutdown")))))
 
   ; Policy change at run-time
   ; This needs to be conveyed to the go-blocks
   ;  which help us conform to policy
   (modify-burst! [this new-burst-count]
-    #_("update the burst-count")
+    (reset! this new-burst-count )
     #_("update tokens available"))
 
   ; Stop all transformation
   ; Signal the go-block logic to clamp down on transformations.
   (zero! [this]
-    #_("special case of modify-burst! Is it?"))
+    (reset! this 0))
 
   ; Stop the go blocks.
   ; How do we communicate with the go-blocks started in another place?

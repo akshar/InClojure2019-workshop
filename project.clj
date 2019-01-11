@@ -15,7 +15,8 @@
                  [ring/ring-json "0.4.0"]
                  [compojure "1.6.1"]
                  [aleph "0.4.6"]
-
+                 [org.clojure/tools.nrepl "0.2.12"]
+                 [cider/cider-nrepl "0.14.0"]
                  [org.clojure/data.csv "0.1.4"]
                  [org.clojure/java.jdbc "0.7.8"]
                  [org.hsqldb/hsqldb "2.4.1"]

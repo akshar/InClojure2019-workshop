@@ -3,7 +3,8 @@
             [icw.java-interop.jdbc :as jdbc]
             [clojure.data.csv :as csv]
             [clojure.string :as cs]
-            [icw.data.gen :as data-gen]))
+            [icw.data.gen :as data-gen]
+            [clojure.string :as str]))
 
 
 ;; Reading and processing data from resources/data/albumlist.csv
@@ -29,14 +30,18 @@
    \"Rock\"
    [\"Rock & Roll\" \"Psychedelic Rock\"]"
   [line]
-  )
+  (let [foo (str/split line #"," 6)]
+    (concat (butlast foo)
+            [(map #(str/replace % "\"" "")
+                  (str/split (last foo)
+                             #","))])))
 
 
 (comment
-  (= (parse-line "1,1967,Sgt. Pepper's Lonely Hearts Club Band,The Beatles,Rock,\"Rock & Roll, Psychedelic Rock\"")
+  (= (parse-line "1,1967,Sgt. Pepper's Lonely Hearts Club Band,The Beatles,Rock,\"Rock & Roll,Psychedelic Rock\"")
      ["1"
       "1967"
-      "Sgt. Pepper's Lonely Hearts Club BandThe Beatles"
+      "Sgt. Pepper's Lonely Hearts Club Band"
       "The Beatles"
       "Rock"
       ["Rock & Roll"
@@ -92,6 +97,7 @@
   [line-xs]
   ;; Use parse-line to convert list of strings to list of vectors
   ;; Use line-vec->line-map to convert list of vectors to list of map
+
   )
 
 (defn populate-db

@@ -313,7 +313,7 @@ x
             (Thread/sleep 10)
             ;; room-a is an agent we want to run a turn after every 10
             ;; msecs
-            (#_FIXME room-a #_FIXME)
+            (send room-a run-a-turn)
             (recur))))
 
 
@@ -360,9 +360,9 @@ x
           albums (idp/line-xs->album-xs idp/album-lines)]
       (doseq [album albums]
         ;; Running it in another thread will help
-        (jdbc/insert! (update-in album
-                                 [:subgenre]
-                                 #(cs/join "," %)))))))
+        (future(jdbc/insert! (update-in album
+                                        [:subgenre]
+                                        #(cs/join "," %))))))))
 
 
 (comment (time (populate-db)))
